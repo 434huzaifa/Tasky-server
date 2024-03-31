@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     require: true,
-  },
+  },                                   
   email: {
     type: String,
     lowercase: true,
@@ -19,11 +19,12 @@ const userSchema = new mongoose.Schema({
     ],
   },
 });
-const User = mongo.model("User", userSchema);
+
+const User = mongoose.model("User", userSchema);
 
 const taskSchema = new mongoose.Schema({
   user: {
-    type: mongo.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
     unique: true,
@@ -55,7 +56,7 @@ const taskSchema = new mongoose.Schema({
     default:null
   }
 });
-
+taskSchema.plugin(mongoosePaginate)
 const Task = mongoose.model("Task",taskSchema)
 
 module.exports = { User,Task };
