@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const {ObjectId}=require("mongoose").Types
+const { ObjectId } = require("mongoose").Types;
 const router = express.Router();
 const {
   isThisToken,
@@ -10,7 +10,7 @@ const {
   CheckQuery,
 } = require("../middlewares/middlewares");
 const { User, Task } = require("../Schemas/schemas");
-const { erroResponse } = require("../Utility/Utility");
+const { erroResponse, UpdateHelper } = require("../Utility/Utility");
 const jwt = require("jsonwebtoken");
 router.get("/", function (req, res) {
   res.render("index", { title: "Express 2" });
@@ -69,7 +69,7 @@ router.post(
   }
 );
 router.get(
-  "/task",
+  "/tasks",
   isThisToken,
   emptyQueryChecker,
   CheckQuery(["status", "page", "limit"]),
@@ -77,17 +77,29 @@ router.get(
     try {
       const { page = 1, limit = 15 } = req.query;
       const options = {
-        populate: { path: "createdBy", select: "name" },
         page: parseInt(page),
         limit: parseInt(limit),
       };
-      const tasks= Task.paginate({user:new ObjectId(req.body.user),status:req.query.status},options)
-      res.send(tasks)
+      const tasks = await Task.paginate(
+        { user: new ObjectId(req.body.user), status: req.query.status },
+        options
+      );
+      res.send(tasks);
     } catch (error) {
       erroResponse(res, error);
     }
   }
 );
+router.patch("/tasks/:id", isThisToken, emptyBodyChecker, async (req, res) => {
+  try {
+    const task=await Task.findById(req.params.id)
+    if (task) {
+      UpdateHelper(task,req.body,res,{msg:"Task Updated"})
+    }
+  } catch (error) {
+    erroResponse(res, error);
+  }
+});
 router.post(
   "/jsonwebtoken",
   emptyBodyChecker,
