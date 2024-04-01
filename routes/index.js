@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const {ObjectId}=require("mongoose").Types
 const router = express.Router();
 const {
   isThisToken,
@@ -62,6 +63,26 @@ router.post(
       const task = new Task(req.body);
       await task.save();
       res.status(201).send({ msg: "Task Created" });
+    } catch (error) {
+      erroResponse(res, error);
+    }
+  }
+);
+router.get(
+  "/task",
+  isThisToken,
+  emptyQueryChecker,
+  CheckQuery(["status", "page", "limit"]),
+  async (req, res) => {
+    try {
+      const { page = 1, limit = 15 } = req.query;
+      const options = {
+        populate: { path: "createdBy", select: "name" },
+        page: parseInt(page),
+        limit: parseInt(limit),
+      };
+      const tasks= Task.paginate({user:new ObjectId(req.body.user),status:req.query.status},options)
+      res.send(tasks)
     } catch (error) {
       erroResponse(res, error);
     }
