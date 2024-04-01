@@ -10,8 +10,7 @@ const isThisToken = async (req, res, next) => {
     if (error) {
       return res.status(401).send({ message: "Unauthorized" });
     }
-    req.user = decoded;
-    console.log("~ decoded", decoded)
+    req.body.user = decoded.id;
     next();
   });
 };
