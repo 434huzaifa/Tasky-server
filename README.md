@@ -21,13 +21,24 @@ git clone https://github.com/434huzaifa/Tasky-server
 cd Tasky-server
 ```
 
-3. Install dependencies
+3. Add `.env` file
+
+```
+# JWT TOKEN
+TOKEN=
+# Mongodb Username
+DB_USER=
+# MongoDB User Password
+DB_PASS=Gd5O6hsiF2arn3YV
+```
+
+4. Install dependencies
 
 ```
 npm i
 ```
 
-4. Run the project
+5. Run the project
 
 ```
 npm i nodemon -g
