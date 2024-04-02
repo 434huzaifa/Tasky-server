@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema({
       "Invalid Email.",
     ],
   },
+},{
+  timestamps:true
 });
 
 const User = mongoose.model("User", userSchema);
@@ -54,6 +56,8 @@ const taskSchema = new mongoose.Schema({
     trim:true,
     default:null
   }
+},{
+  timestamps:true
 });
 taskSchema.plugin(mongoosePaginate)
 const Task = mongoose.model("Task",taskSchema)

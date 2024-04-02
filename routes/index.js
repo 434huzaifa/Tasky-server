@@ -21,7 +21,6 @@ router.post(
   checkBody(["name", "email"]),
   async (req, res) => {
     try {
-      console.log(req.body);
       let user = await User.findOne({ email: req.body.email });
       if (!user) {
         user = new User(req.body);
@@ -75,13 +74,15 @@ router.get(
   CheckQuery(["status", "page", "limit"]),
   async (req, res) => {
     try {
-      const { page = 1, limit = 15 } = req.query;
+      const { page = 1, limit = 5 } = req.query;
       const options = {
         page: parseInt(page),
         limit: parseInt(limit),
+        sort:"-createdAt"
       };
+      const id= new ObjectId(req.body.user)
       const tasks = await Task.paginate(
-        { user: new ObjectId(req.body.user), status: req.query.status },
+        { user: id, status: req.query.status },
         options
       );
       res.send(tasks);
@@ -90,7 +91,7 @@ router.get(
     }
   }
 );
-router.patch("/tasks/:id", isThisToken, emptyBodyChecker, async (req, res) => {
+router.patch("/task/:id", isThisToken, emptyBodyChecker, async (req, res) => {
   try {
     const task=await Task.findById(req.params.id)
     if (task) {
@@ -102,7 +103,7 @@ router.patch("/tasks/:id", isThisToken, emptyBodyChecker, async (req, res) => {
     erroResponse(res, error);
   }
 });
-router.delete("/tasks/:id".isThisToken,async(req,res)=>{
+router.delete("/task/:id",isThisToken,async(req,res)=>{
   try {
     const task= await Task.findByIdAndDelete(req.params.id)
     if (task) {
