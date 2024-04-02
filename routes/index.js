@@ -148,6 +148,11 @@ router.get("/home",isThisToken,async(req,res)=>{
     erroResponse(res,error)
   }
 })
+router.get("/tester",async(req,res)=>{
+  res.send({
+    test:"OK"
+  })
+})
 router.post(
   "/jsonwebtoken",
   emptyBodyChecker,
