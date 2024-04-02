@@ -103,6 +103,18 @@ router.patch("/task/:id", isThisToken, emptyBodyChecker, async (req, res) => {
     erroResponse(res, error);
   }
 });
+router.put("/task/:id", isThisToken, emptyBodyChecker, async (req, res) => {
+  try {
+    const task=await Task.findById(req.params.id)
+    if (task) {
+      UpdateHelper(task,req.body,res,{msg:"Task Updated"})
+    }else{
+      res.status(400).send({msg:"Task not found"})
+    }
+  } catch (error) {
+    erroResponse(res, error);
+  }
+});
 router.delete("/task/:id",isThisToken,async(req,res)=>{
   try {
     const task= await Task.findByIdAndDelete(req.params.id)
