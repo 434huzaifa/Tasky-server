@@ -55,7 +55,7 @@ router.post(
   "/task",
   isThisToken,
   emptyBodyChecker,
-  checkBody(["title", "description"]),
+  checkBody(["title"]),
   async (req, res) => {
     try {
       console.log(req.body);
@@ -124,6 +124,26 @@ router.delete("/task/:id",isThisToken,async(req,res)=>{
       res.status(400).send({msg:"Task not found"})
     }
     
+  } catch (error) {
+    erroResponse(res,error)
+  }
+})
+router.get("/home",isThisToken,async(req,res)=>{
+  try {
+    const result=await Task.aggregate([
+      {
+        $match: {
+          user: new ObjectId(req.body.user) 
+        }
+     },
+     {
+        $group: {
+          _id: "$status", 
+          count: { $sum: 1 } 
+        }
+     }
+     ])
+     res.send(result)
   } catch (error) {
     erroResponse(res,error)
   }
