@@ -26,7 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(cors())
 app.use(cors({
     origin: [
-        'http://localhost:5173'
+        'http://localhost:5173',
+        'https://tasky-one-tau.vercel.app'
     ],
     credentials: true
 }));
