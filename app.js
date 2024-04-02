@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
     origin: [
         'http://localhost:5173',
-        'https://tasky-one-tau.vercel.app'
+        'https://tasky-server-ruzz.onrender.com'
     ],
     credentials: true
 }));
