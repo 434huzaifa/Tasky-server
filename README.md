@@ -29,7 +29,7 @@ TOKEN=
 # Mongodb Username
 DB_USER=
 # MongoDB User Password
-DB_PASS=Gd5O6hsiF2arn3YV
+DB_PASS=
 ```
 
 4. Install dependencies
